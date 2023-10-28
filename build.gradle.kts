@@ -5,7 +5,7 @@ plugins {
     id("org.jetbrains.compose")
 }
 
-group = "com.example"
+group = "de.life.hacked"
 version = "1.0-SNAPSHOT"
 
 repositories {
@@ -21,6 +21,10 @@ dependencies {
     // (in a separate module for demo project and in testMain).
     // With compose.desktop.common you will also lose @Preview functionality
     implementation(compose.desktop.currentOs)
+  testImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
+// https://mvnrepository.com/artifact/com.github.javafaker/javafaker
+  implementation("com.github.javafaker:javafaker:1.0.2")
+
 }
 
 compose.desktop {
@@ -28,8 +32,13 @@ compose.desktop {
         mainClass = "MainKt"
 
         nativeDistributions {
-            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "was"
+          targetFormats(
+            TargetFormat.Dmg,
+            TargetFormat.Msi,
+            TargetFormat.Deb,
+            TargetFormat.AppImage
+          )
+          packageName = "control"
             packageVersion = "1.0.0"
         }
     }

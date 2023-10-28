@@ -1,4 +1,7 @@
+package de.life.hacked
+
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,25 +21,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.FrameWindowScope
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 
-
-class AppViewModel {
-	private val _queryInputFlow = MutableStateFlow("")
-	val queryInputFlow: StateFlow<String> get() = _queryInputFlow
-
-	fun query(value: String) {
-		_queryInputFlow.value = value
-	}
-
-	fun resetQuery() {
-		_queryInputFlow.value = ""
-	}
-}
 
 @Composable
-fun MainContent(viewModel: AppViewModel, window: FrameWindowScope) {
+fun MainContent(viewModel: MainViewModel, window: FrameWindowScope) {
 	val title by viewModel.queryInputFlow.collectAsState()
 	Content(title = title, onInput = {
 		viewModel.query(it)
@@ -51,7 +39,9 @@ fun Content(
 	onInput: (String) -> Unit,
 	onResetClicked: () -> Unit,
 ) {
-	MaterialTheme(colors = darkColors()) {
+	Box(
+		modifier = Modifier.background(MaterialTheme.colors.background.copy(alpha = 0.5f))
+	) {
 		Column(
 			modifier = Modifier
 				.fillMaxSize()
@@ -59,6 +49,7 @@ fun Content(
 				.padding(8.dp),
 			horizontalAlignment = Alignment.CenterHorizontally
 		) {
+			Header()
 			OutlinedTextField(
 				modifier = Modifier.fillMaxWidth(),
 				value = title,
@@ -78,11 +69,16 @@ fun Content(
 	}
 }
 
+@Composable
+fun Header() {
+	TODO("show logo")
+}
+
 
 fun main() = application {
 	Window(onCloseRequest = ::exitApplication) {
-		MaterialTheme {
-			MainContent(AppViewModel(), this@Window)
+		MaterialTheme(colors = darkColors()) {
+			MainContent(MainViewModel(), this@Window)
 		}
 	}
 }
